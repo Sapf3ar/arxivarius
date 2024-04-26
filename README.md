@@ -11,6 +11,5 @@
 - также у агентов есть возможность генерировать псевдокод для лучшего описания вопроса
 
 ## Схема взаимодействия
-<img width="799" alt="Screenshot 2024-04-26 at 08 10 27" src="https://github.com/Sapf3ar/arxivarius/assets/70803676/2fa64c1e-8eeb-476f-9784-9925bf52085c">
-
+<img width="1011" alt="Screenshot 2024-04-26 at 08 13 42" src="https://github.com/Sapf3ar/arxivarius/assets/70803676/62b58196-0520-42bd-9210-29f4112e0d1e">
 
