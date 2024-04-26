@@ -1,15 +1,27 @@
+import operator
 from code_writer import CodeWrite
 from prompts import get_research_prompt, lector_prompt
 from langchain_core.prompts import ChatPromptTemplate
 import streamlit as st
 import os
 import logging
+import json
+from typing import Annotated, Sequence, TypedDict
 from langchain.chat_models.gigachat import GigaChat
+from langchain_core.tools import tool
+from langchain import hub
+from langchain.output_parsers import PydanticOutputParser
+from langchain.prompts import PromptTemplate
+from langchain_core.utils.function_calling import convert_to_gigachat_tool, convert_to_gigachat_function
 from langchain_core.messages import BaseMessage, FunctionMessage, HumanMessage, SystemMessage, AIMessage
+from langchain.output_parsers.openai_tools import PydanticToolsParser
+from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_core.output_parsers import StrOutputParser
+from langchain.tools.retriever import create_retriever_tool
 from langchain_community.vectorstores.faiss import FAISS
 
 from embedder import FastEmbeddings, download_papers, embed_docs
+from parser import get_correct_name_from_topk
 
 
 
@@ -95,7 +107,9 @@ class WorkFlow():
         return response
 
     def rewrite(self, input):
-        pass
+       pass 
+
+
     def call_researcher(self, human_input, rag_response):
         model = GigaChat(
                     credentials=os.environ['GIGA_TOKEN'],
@@ -147,8 +161,7 @@ class WorkFlow():
                                          response=prompt)
         
         logging.warning(f"LECTOR OUTPUT {lector_output}")
-        return lector_output 
-
+        return lector_output
     def call_lector(self, input, response):
         model = GigaChat(credentials=os.environ['GIGA_TOKEN'],
                         verify_ssl_certs=False,
@@ -166,7 +179,36 @@ class WorkFlow():
     def build_response(self, response, result):
         if result:
             response = ""
-  
+    def build_agents(self, ):
+        
+        self.res_llm = GigaChat(
+            credentials=os.environ["GIGA_TOKEN"],
+            verify_ssl_certs=False,
+            model="GigaChat-Pro",
+            scope='GIGACHAT_API_CORP',
+            temperature=0.5,
+            top_p=0.5
+
+        )
+
+
+        self.engineer_llm = GigaChat(
+            credentials=os.environ["GIGA_TOKEN"],
+            verify_ssl_certs=False,
+            model="GigaChat-Pro",
+            scope='GIGACHAT_API_CORP',
+            temperature=0.3,
+            top_p=0.2)
+
+         
+
+        self.lector_llm = GigaChat(
+            credentials=os.environ["GIGA_TOKEN"],
+            verify_ssl_certs=False,
+            model="GigaChat-Pro",
+            scope='GIGACHAT_API_CORP',
+            temperature=0.5,)
+ 
 
 
 
