@@ -1,4 +1,9 @@
 # Byte-compiled / optimized / DLL files
+renv/
+fais_db/
+codes/
+current_paper/
+data/
 __pycache__/
 *.py[cod]
 *$py.class
