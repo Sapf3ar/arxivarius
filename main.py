@@ -91,7 +91,7 @@ with st.container():
         st.session_state.messages.append({"role": "user", "content": prompt})
         st.chat_message("user").write(prompt)
 
-        outputs = model.execute_steps(st.session_state.messages[-1]['content'])
+        outputs= model.execute_steps(st.session_state.messages[-1]['content'])
         pprint.pprint(outputs)
 
 
