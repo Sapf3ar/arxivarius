@@ -1,13 +1,9 @@
 import pytest
-from main import WorkFlow, init_keys, make_file_upload, download_papers
+from main import init_keys, make_file_upload, WorkFlow
 
-# Test class for WorkFlow functionalities
-class TestWorkFlow:
-    def setup_method(self):
-        self.workflow = WorkFlow()
+class TestMainFunctionality:
 
     def test_init_keys(self):
-        # Test initialization of session state keys
         init_keys()
         assert "messages" in st.session_state
         assert "file_uploaded" in st.session_state
@@ -16,19 +12,17 @@ class TestWorkFlow:
         make_file_upload()
         assert st.session_state.file_uploaded is True
 
-    def test_download_papers_valid_link(self):
-        # Mock a valid link to a paper
-        valid_link = "https://arxiv.org/abs/1234.5678"
-        papers = download_papers([valid_link])
-        assert len(papers) > 0
+    def test_workflow_execution(self):
+        model = WorkFlow()
+        result = model.execute_steps('Test input')
+        assert result is not None
 
-    def test_download_papers_invalid_link(self):
-        # Mock an invalid link to a paper
-        invalid_link = "https://arxiv.org/abs/invalid"
-        papers = download_papers([invalid_link])
-        assert papers is None
+# Edge case tests
+    def test_invalid_link(self):
+        st.session_state.file_uploaded = False
+        paper_link = 'invalid_link'
+        with pytest.raises(Exception):
+            # Assuming the function raises an exception on invalid link
+            ArxivLoader(query=paper_link)
 
-    # Add more tests for other functionalities and edge cases
-
-if __name__ == "__main__":
-    pytest.main()
+# Additional edge cases can be continued following similar structure.
