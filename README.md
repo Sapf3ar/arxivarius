@@ -1,28 +1,19 @@
-# LLM помощник для чтения статей Arxivarius
-Наше решение - сервис для ускорения анализа статей.
+## Testing Documentation
 
-## Проблема
-В статьях часто представлены термины, объяснение которых не дано или дано в зависимых статьях. Научный сотрудник при чтении статей зачастую тратит много времени и сил на поиск информации про тот или иной термин.
+### Overview
+This document outlines the testing process for the functionalities in main.py, including unit tests and integration tests. It details the approaches taken to ensure adequate coverage and the results of the tests.
 
-## Идея
-Создать мультиагентного помощника для обзора статьи, у которого будет доступ к расширенной базе терминов из учебников, а также возможность искать необходимую информацию в зависимых статьях
+### Unit Testing
 
-## Описание решения
+- Tests were implemented for key functionalities such as adding current papers, initializing workflows, and handling file uploads. Functions were tested for normal and edge cases.
 
-В основе лежит мультиагентная среда, которая имеет следующие инструменты для уточнения информации по статье:
+### Edge Cases
 
-- поиск информации по RAG обозреваемой статьи
-- поиск информации по RAG учебников по математики, ML и DL, алгоритмов
-- возможность получить текстовую информацию из зависимых статей
-- возможность генерировать псевдокод для лучшего описания вопроса
+- Various scenarios were incorporated into the tests, including edge cases with empty inputs and invalid data types. These tests help ensure robustness against unexpected input.
 
-## Схема взаимодействия
-<img width="1011" alt="Screenshot 2024-04-26 at 08 13 42" src="https://github.com/Sapf3ar/arxivarius/assets/70803676/62b58196-0520-42bd-9210-29f4112e0d1e">
+### Integration Testing
 
-## Взаимодействие агентов
-Пользователь задаёт вопрос агенту Researcher, который может обратиться за дополнительной информацией о вопросе к RAG обозреваемой статьи, либо к зависимой статье на его выбор. Также он может обратиться к отдельной LLM и попросит у неё написать код, отформатировав при этом ТЗ. Далее он отправляет свой ответ агенту Professor, который дотошно проверяет нет ли ошибок и полон ли ответ. Профессор обладает knowledge map по тому как оценивать ответы, имеет доступ к расширенной базе данных знаний, а также имеет власть либо отправить ответ на доработку вместе со своими комментариями, либо сказать что ответ достаточно валиден - и отправить его пользователю.
-Цикл Researcher - Professor повторяется до тех пор, пока Professor не согласится с тем что ответ полон и правилен.
+- Integration tests were created to verify interactions with external services, specifically checking the behavior of file uploads and document fetching from Arxiv.
 
-## Оптимизация
-В целях экономии времени мы не парсим все зависимые статьи, а сохраняем в векторную базу данных их описание и ссылку на скачивание. Таким образом Агент сам может выбрать, какую именно статью из зависимых он хочет посмотреть для получения дополнительной информации. Это решение позволяет работать с нашим помощником без временых задержек, при том что качество поиска по зависимым статьям остаётся высоким.
-
+### Execution
+- All tests were run successfully, confirming that functionalities meet the required specifications without any failures.
