@@ -8,7 +8,6 @@ import streamlit as st
 import logging
 from embedder import check_preload, download_papers, embed_docs, show_outline
 from parser import get_correct_name_from_topk, get_download_id, parse_links
-#from selfrag import SelfRagExecutor, paper_search, ref_search
 import pprint
 import os
 
@@ -25,7 +24,6 @@ def init_keys():
         st.session_state["file_uploaded"] = False
 
 init_keys()
-
 
 model = WorkFlow()
 
@@ -82,7 +80,6 @@ with st.sidebar:
 
 
 
-
 with st.container():
     for msg in st.session_state.messages:
         st.chat_message(msg["role"]).write(msg["content"])
@@ -94,9 +91,7 @@ with st.container():
         outputs= model.execute_steps(st.session_state.messages[-1]['content'])
         pprint.pprint(outputs)
 
-
         msg = outputs
         st.session_state.messages.append({"role": "assistant", "content": msg})
         st.chat_message("assistant").write(msg)
-
 
