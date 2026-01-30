@@ -1,19 +1,16 @@
 ## Testing Documentation
 
 ### Overview
-This document outlines the testing process for the functionalities in main.py, including unit tests and integration tests. It details the approaches taken to ensure adequate coverage and the results of the tests.
+This document outlines the testing strategy used for the functionalities within the main.py file, including unit tests and integration tests.
 
-### Unit Testing
+### Unit Tests
+- **Functionality Tested:** Initialization of session keys, file upload mechanism, and document downloading.
+- **Testing Framework:** pytest.
+- **Test Cases: **
+    - Valid and invalid paper links were tested to ensure proper handling by the `download_papers` function.
 
-- Tests were implemented for key functionalities such as adding current papers, initializing workflows, and handling file uploads. Functions were tested for normal and edge cases.
+### Integration Tests
+- Integration tests will be implemented in future iterations to ensure that functionalities involving external services work correctly.
 
-### Edge Cases
-
-- Various scenarios were incorporated into the tests, including edge cases with empty inputs and invalid data types. These tests help ensure robustness against unexpected input.
-
-### Integration Testing
-
-- Integration tests were created to verify interactions with external services, specifically checking the behavior of file uploads and document fetching from Arxiv.
-
-### Execution
-- All tests were run successfully, confirming that functionalities meet the required specifications without any failures.
+### Running Tests
+To run the tests, execute `pytest` in the project directory.
