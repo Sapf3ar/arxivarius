@@ -8,10 +8,8 @@ import streamlit as st
 import logging
 from embedder import check_preload, download_papers, embed_docs, show_outline
 from parser import get_correct_name_from_topk, get_download_id, parse_links
-#import from selfrag import SelfRagExecutor, paper_search, ref_search
 import pprint
 import os
-
 from selfrag import WorkFlow
 
 os.environ["GIGA_TOKEN"] = "Yjg4MTQzMmUtNDAwMS00NDk0LThjOGUtNmU5ZWQ2YzQ4NDQ2OmQ4MWMxZGZiLTFmNGYtNDk5NS05OGQzLTBiMzYyYWJmNjk3OA=="
@@ -19,12 +17,18 @@ check_preload()
 
 def init_keys():
     """
-    Initializes session state keys for Streamlit app.
+    Initializes session state keys for the application.
 
-    This function checks if 'messages' and 'file_uploaded' keys are present in the session state, and initializes them if they are not.
+    This function ensures that particular keys exist in the Streamlit session state,
+    which are necessary for the app's functionality, such as tracking messages
+    and uploaded files. If these keys are not present, they are initialized with
+    default values.
 
-    Returns:
-        None
+    Raises:
+        KeyError: If any operation expects keys that are not initialized.
+
+    Example:
+        >>> init_keys()
     """
     if "messages" not in st.session_state:
         st.session_state["messages"] = [{"role": "assistant", "content": "How can I help you?"}]
@@ -37,18 +41,22 @@ init_keys()
 
 model = WorkFlow()
 
-
 def make_file_upload():
     """
-    Sets the file_uploaded flag to True in session state.
+    Updates session state to indicate that a file has been uploaded.
 
-    This function is called when a file is uploaded to indicate the file is now being processed.
+    This function sets the `file_uploaded` key in the session state to
+    True, which triggers the application to process the uploaded file.
 
-    Returns:
-        None
+    Raises:
+        None: This function does not raise exceptions.
+
+    Example:
+        >>> make_file_upload()
     """
     st.session_state.file_uploaded = True
-logging.warning(st.session_state.file_uploaded)
+    logging.warning(st.session_state.file_uploaded)
+
 with st.sidebar:
     if st.session_state.file_uploaded:
         show_outline()
@@ -58,7 +66,7 @@ with st.sidebar:
                                )
     logging.warning("link" + paper_link)
     if paper_link:
-        logging.warning("link" + paper_link + "uploaded")
+        logging.warning("link" + paper_link + "uploaded\")
         try:
             logging.warning("uploading")
             paper =  ArxivLoader(query=paper_link.split("/")[-1][:-3], 
@@ -66,7 +74,7 @@ with st.sidebar:
                                  load_max_docs=1).load()[0]
             
         except Exception as e:
-            st.markdown("Invalid link or arxiv api is unreachable :(")
+            st.markdown("Invalid link or arxiv api is unreachable :(\")
             st.session_state.file_uploaded = False
             logging.warning("EXCEPTION" + str(e))
         else:
@@ -75,8 +83,6 @@ with st.sidebar:
             st.session_state.name = paper.metadata['Title']
             st.session_state.refs = parse_links(paper_link) 
             model.add_current_paper_rag(embed_docs([paper]))
-                                        #agent_rag = SelfRagExecutor(references=st.session_state.refs, tools=[ref_search, paper_search]).build_graph())A
-            #st.session_state.self_rag = agent_rag 
             '''
             my_bar = st.progress(0, text="Fetching references")
             paper_ids = []
@@ -96,8 +102,6 @@ with st.sidebar:
             papers = download_papers(paper_ids)
             embed_docs(papers)
             '''
-
-
 
 with st.container():
     for msg in st.session_state.messages:
