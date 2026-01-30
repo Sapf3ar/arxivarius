@@ -1,19 +1,17 @@
-from langchain_core.tools import tool
-from langchain_experimental.utilities import pythonrepl
-from typing import annotated
+def new_function(param1: int, param2: str) -> str:
+    """
+    A new function that combines an integer and a string.
 
+    Parameters:
+    param1 (int): The integer to combine.
+    param2 (str): The string to combine.
 
-
-@tool
-def python_repl(
-    code: annotated[str, "the python code to execute to generate your chart."]
-):
-    """use this to execute python code. if you want to see the output of a value,
-    you should print it out with `print(...)`. this is visible to the user."""
-
-    repl = pythonrepl()
+    Returns:
+    str: A combined result of the integer and string.
+    """
     try:
-        result = repl.run(code)
-    except baseexception as e:
-        return f"failed to execute. error: {repr(e)}"
-    return f"succesfully executed:\n```python\n{code}\n```\nstdout: {result}"
+        result = f'{param1} - {param2}'
+        return result
+    except Exception as e:
+        print(f'An error occurred: {e}')
+        return ''
